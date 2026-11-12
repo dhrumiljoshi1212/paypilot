@@ -46,3 +46,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# demo video working files
+/demo/node_modules/
+/demo/audio/
+/demo/samples/
+/demo/shots/
+/demo/*.webm
+/demo/*.mp4
+/demo/qa_*
+/demo/frames/

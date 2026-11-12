@@ -1,0 +1,97 @@
+[
+ {
+  "id": "01",
+  "beat": "card-hook",
+  "text": "Every small business has this list. Invoices that went out weeks ago, still unpaid. The hard part isn't the money. It's deciding who to chase, and what to say."
+ },
+ {
+  "id": "02",
+  "beat": "card-intro",
+  "text": "This is Pay Pilot, an A I receivables assistant built on PayPal Invoicing. Everything here is live: real PayPal Sandbox calls, running on Azure. No real money moves."
+ },
+ {
+  "id": "03",
+  "beat": "dashboard-metrics",
+  "text": "Here's my overview. Four thousand and fifty dollars outstanding, across three invoices. Two thousand and fifty of it is already overdue."
+ },
+ {
+  "id": "04",
+  "beat": "dashboard-briefing",
+  "text": "And before I've asked anything, it's ranked them. Twelve hundred dollars, twelve days late, score seventy nine. Each score has a plain English reason. It's a heuristic, not machine learning, and it says so."
+ },
+ {
+  "id": "05",
+  "beat": "invoices",
+  "text": "These are real Sandbox invoices from the PayPal Invoicing A P I. PayPal's own status sits under Pay Pilot's overdue math, so you can check its work."
+ },
+ {
+  "id": "06",
+  "beat": "agent-ask",
+  "text": "Now let me just ask it. Which invoices are a week or more overdue, and which should I chase first?"
+ },
+ {
+  "id": "07",
+  "beat": "agent-tools",
+  "text": "Watch the tool calls. It isn't guessing from a prompt stuffed with numbers. It calls typed tools, a summary, then the overdue analysis, and answers only from what they return."
+ },
+ {
+  "id": "08",
+  "beat": "agent-answer",
+  "text": "Two invoices, two thousand and fifty dollars. Chase the twelve hundred first. Same answer as the dashboard, because it's the same scoring code underneath."
+ },
+ {
+  "id": "09",
+  "beat": "draft-ask",
+  "text": "So. Draft a friendly reminder for that one."
+ },
+ {
+  "id": "10",
+  "beat": "draft-wait",
+  "text": "This is the part I care about most. The agent can write a draft. It cannot send one. There is no send tool for it to call. The draft goes into an approval queue, and it stops there."
+ },
+ {
+  "id": "11",
+  "beat": "approval-card",
+  "text": "And here it is. Recipient, amount, twelve days overdue, and why it picked this invoice. Nothing has been sent."
+ },
+ {
+  "id": "12",
+  "beat": "edit-draft",
+  "text": "I'll add a line of my own, because it's my customer."
+ },
+ {
+  "id": "13",
+  "beat": "approve",
+  "text": "Approve, and send. Only now does the server re-check the invoice with PayPal, and then call the reminder endpoint."
+ },
+ {
+  "id": "14",
+  "beat": "result",
+  "text": "H T T P two oh four. PayPal accepted it. One honest caveat: PayPal sends its own template and ignores custom text. So my note is kept here for the record, not emailed."
+ },
+ {
+  "id": "15",
+  "beat": "payment",
+  "text": "Now the other direction. Inside PayPal, I've just recorded a payment on the two thousand dollar invoice that's due tomorrow. I haven't touched Pay Pilot."
+ },
+ {
+  "id": "16",
+  "beat": "webhook",
+  "text": "PayPal fires a webhook. Pay Pilot verifies the signature with PayPal, stores the event exactly once, and refreshes the invoice. There it is: invoice paid, PayPal verified."
+ },
+ {
+  "id": "17",
+  "beat": "activity",
+  "text": "And that's the whole trail. The A I draft, my approval, PayPal's two oh four, and the payment. Each one labelled with where it came from."
+ },
+ {
+  "id": "18",
+  "beat": "dashboard-after",
+  "text": "Back on the overview. Outstanding is down to two thousand and fifty. Paid this month, two thousand one hundred and twenty five."
+ },
+ {
+  "id": "19",
+  "beat": "card-close",
+  "text": "Pay Pilot. The A I does the reading, the ranking, and the writing. A person makes every call that reaches a customer."
+ }
+]
