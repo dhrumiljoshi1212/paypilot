@@ -1,0 +1,19 @@
+import { defineConfig } from "vitest/config";
+import { fileURLToPath } from "node:url";
+
+const root = fileURLToPath(new URL(".", import.meta.url));
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      "@": root,
+      "server-only": `${root}tests/stub-server-only.ts`,
+    },
+  },
+  test: {
+    environment: "node",
+    include: ["tests/**/*.test.ts"],
+    setupFiles: ["./tests/setup.ts"],
+    pool: "forks",
+  },
+});
