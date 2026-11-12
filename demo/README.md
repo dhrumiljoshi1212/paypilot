@@ -10,6 +10,7 @@ Narrated 2:55 walkthrough of PayPilot, recorded live against the Azure deploymen
 | `mux.py` | Places each narration line at its recorded beat time and encodes the final MP4. |
 | `cards/` | Title cards shown at the start and end. |
 | `beats_raw.json` | Beat times of the final take before the edit below. |
+| `stills.mjs` | 3:2 screenshots (2880×1920) in `docs/screenshots/`. Creates and leaves one draft reminder for shot 3; cancel it afterwards. |
 | `rehearse.mjs`, `shots.mjs` | Helpers used to time agent responses and screenshot pages while writing the script. |
 
 ## Re-record
