@@ -11,6 +11,7 @@ This file records deployment state and operating details. **It contains no secre
 
 | Item | Value |
 | --- | --- |
+| Hosted app | https://paypilot-ff6847.azurewebsites.net (Azure App Service, Linux B1, Central India, RG `paypilot-rg`) |
 | Local app | http://localhost:3000 |
 | Data source | PayPal Sandbox (`data_source=PAYPAL` in SQLite) |
 | PayPal API | `https://api-m.sandbox.paypal.com` |
@@ -129,7 +130,22 @@ The helper uses the wildcard subscription because that is what delivered reliabl
 
 SQLite requires a persistent filesystem, so Vercel's ephemeral filesystem is not suitable.
 
-Recommended: single-instance Render/Railway/Fly service with a persistent disk.
+### Azure App Service (current)
+
+`scripts/deploy-azure.sh [app-name] [resource-group] [location]` creates the plan and web app, copies secrets from `.env` into App Settings, and zip-deploys the committed `HEAD` (Oryx builds on Linux). Redeploy code only:
+
+```bash
+git archive --format=zip -o /tmp/paypilot.zip HEAD
+az webapp deployment source config-zip -g paypilot-rg -n paypilot-ff6847 --src /tmp/paypilot.zip --timeout 1500
+```
+
+- Database: `/home/data/paypilot.db` (persistent `/home` share) with `SQLITE_JOURNAL_MODE=DELETE` (WAL is unreliable on that network share).
+- Do not set `NODE_ENV` as an App Setting; `.npmrc` (`include=dev`) keeps build-time devDependencies installed.
+- The first start after a deploy can exceed Azure's 10-minute wait while `node_modules` is unpacked; check `/api/health` before treating it as failed.
+
+### Other hosts
+
+Any single-instance Render/Railway/Fly service with a persistent disk also works.
 
 | Setting | Value |
 | --- | --- |
