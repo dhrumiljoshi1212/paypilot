@@ -99,7 +99,13 @@ export function getDb(): Database.Database {
   }
 
   const db = new Database(file);
-  db.pragma("journal_mode = WAL");
+  // WAL needs shared memory, which network filesystems (e.g. Azure App
+  // Service /home) do not support reliably. Allow DELETE mode there.
+  const journalMode =
+    process.env.SQLITE_JOURNAL_MODE?.trim().toUpperCase() === "DELETE"
+      ? "DELETE"
+      : "WAL";
+  db.pragma(`journal_mode = ${journalMode}`);
   db.pragma("foreign_keys = ON");
   db.exec(SCHEMA);
   instance = db;
