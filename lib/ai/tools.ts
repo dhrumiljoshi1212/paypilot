@@ -169,6 +169,15 @@ const draftSchema = z.object({
   rationale: z.string().min(3).max(1000),
 });
 
+/** Agents often quote the human-readable invoice number; accept it as well as the PayPal ID. */
+function findInvoice(invoices: Invoice[], idOrNumber: string): Invoice | undefined {
+  const needle = idOrNumber.trim().toLowerCase();
+  return (
+    invoices.find((item) => item.id.toLowerCase() === needle) ??
+    invoices.find((item) => item.number?.toLowerCase() === needle)
+  );
+}
+
 export function invoiceFacts(invoice: Invoice): Record<string, unknown> {
   return {
     invoice_id: invoice.id,
@@ -294,9 +303,7 @@ export async function executeAgentTool(
 
       case "get_invoice_details": {
         const input = detailsSchema.parse(rawInput);
-        let invoice = context.invoices.find(
-          (item) => item.id === input.invoice_id,
-        );
+        let invoice = findInvoice(context.invoices, input.invoice_id);
         if (!invoice) {
           try {
             invoice = await getInvoiceById(input.invoice_id);
@@ -408,9 +415,7 @@ export async function executeAgentTool(
 
       case "draft_payment_reminder": {
         const input = draftSchema.parse(rawInput);
-        const invoice = context.invoices.find(
-          (item) => item.id === input.invoice_id,
-        );
+        const invoice = findInvoice(context.invoices, input.invoice_id);
         if (!invoice) {
           return fail(
             `No invoice found with ID ${input.invoice_id}. Use get_invoice_summary first; do not invent an invoice ID.`,
