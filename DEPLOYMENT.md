@@ -18,12 +18,12 @@ This file records deployment state and operating details. **It contains no secre
 | AI model | `claude-sonnet-5-5` (Anthropic Messages API, tool use) |
 | Database | `data/paypilot.db` (SQLite, WAL) |
 | Auth | None — single-operator demo; put behind SSO before public sharing |
-| Tunnel | **Stopped** (Cloudflare quick tunnel, temporary) |
-| Webhook | **Deleted** after the tunnel was stopped |
+| Tunnel | **Stopped** (Cloudflare quick tunnel, temporary; superseded by Azure) |
+| Webhook | `29F19106PB237773S` → `https://paypilot-ff6847.azurewebsites.net/api/webhooks/paypal` (wildcard `*`), verified delivery 2026-11-12 |
 | Tests | 26 passing (`npm test`) |
 | Smoke test | 5/5 passed on 2026-11-12 (`npm run smoke`) |
 
-The app remains runnable locally in sandbox mode. Without a public HTTPS URL, webhook configuration is intentionally blank (`PAYPAL_WEBHOOK_ID=`), so the settings screen shows "Not configured". Invoice reads, AI tools, approvals, and real reminder execution still work.
+The Azure deployment has `PAYPAL_WEBHOOK_ID` set as an App Setting. Locally, `.env` keeps `PAYPAL_WEBHOOK_ID=` blank (PayPal cannot reach localhost), so the local settings screen shows "Not configured". Invoice reads, AI tools, approvals, and real reminder execution still work.
 
 ---
 
@@ -37,7 +37,7 @@ All runtime secrets are in **`.env`** at the repository root. It is ignored by G
 | `PAYPAL_BASE_URL` | `https://api-m.sandbox.paypal.com` |
 | `PAYPAL_CLIENT_ID` | Sandbox app client ID (in `.env`) |
 | `PAYPAL_CLIENT_SECRET` | Sandbox app secret (in `.env`) |
-| `PAYPAL_WEBHOOK_ID` | Empty after tunnel shutdown; set after re-registering |
+| `PAYPAL_WEBHOOK_ID` | Blank locally; `29F19106PB237773S` on Azure (App Setting) |
 | `PAYPAL_SANDBOX_BUYER_EMAIL` | Sandbox personal/buyer email (in `.env`) |
 | `ANTHROPIC_API_KEY` | Claude key (in `.env`) |
 | `ANTHROPIC_MODEL` | `claude-sonnet-5-5` |
@@ -68,6 +68,7 @@ All are real PayPal Sandbox invoices created through the Invoicing API. Prefix `
 | `PILOT-PAID-1794474796690` | `INV2-WE4D-45ES-L4JJ-8CV3` | $50.00 | 2026-11-19 | PAID (lifecycle test) |
 | `PILOT-WH2-1794474264850` | `INV2-738B-8R2T-3U89-PJ7A` | $100.00 | 2026-12-12 | CANCELLED (test) |
 | `PILOT-WH-1794474213873` | `INV2-X4PZ-ABZ8-2X8E-33LG` | $300.00 | 2026-12-12 | CANCELLED (test) |
+| `PILOT-AZ-1794481115228` | `INV2-ARZP-7XME-D97M-67A3` | $1.00 | — | DRAFT (Azure webhook test: `INVOICING.INVOICE.CREATED` delivered and verified) |
 
 The app cache reflects this list after a full refresh. The three open invoices drive the dashboard metrics.
 
