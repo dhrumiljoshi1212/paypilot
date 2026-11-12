@@ -30,7 +30,6 @@ az webapp config appsettings set -g "$RG" -n "$APP_NAME" -o none --settings \
   SCM_DO_BUILD_DURING_DEPLOYMENT=true \
   WEBSITES_ENABLE_APP_SERVICE_STORAGE=true \
   WEBSITES_CONTAINER_START_TIME_LIMIT=600 \
-  NODE_ENV=production \
   APP_URL="$APP_URL" \
   PAYPAL_BASE_URL="${PAYPAL_BASE_URL:-https://api-m.sandbox.paypal.com}" \
   PAYPAL_CLIENT_ID="${PAYPAL_CLIENT_ID:-}" \
@@ -43,6 +42,8 @@ az webapp config appsettings set -g "$RG" -n "$APP_NAME" -o none --settings \
   DEMO_MODE="${DEMO_MODE:-false}" \
   ALLOW_LIVE_PAYPAL=false
 
+# NODE_ENV is not set: Oryx would skip devDependencies (tailwind) during build;
+# `next start` sets production mode at runtime.
 # Package source from git (excludes .env, data/, node_modules, .next); Oryx builds on Linux
 ZIP="$(mktemp -d)/paypilot.zip"
 git archive --format=zip -o "$ZIP" HEAD
